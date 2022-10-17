@@ -8,7 +8,7 @@ public class CalculatorService {
         double result;
         switch (calculation) {
             case "Addition(+)":
-                result = a + b;
+                result = a + b; 
                 break;
             case "Subtraction(-)":
                 result = a - b;
