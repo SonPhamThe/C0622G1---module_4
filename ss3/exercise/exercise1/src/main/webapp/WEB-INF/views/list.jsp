@@ -13,14 +13,6 @@
 </head>
 <body>
 <table class="table">
-    <thead>
-    <tr>
-        <th>LANGUAGE</th>
-        <th>SIZE</th>
-        <th>SPAM FILTER</th>
-        <th>SIGNATURE</th>
-    </tr>
-    </thead>
     <tbody>
     <tr>
         <td><b>Language:</b>${mail.language}</td>
