@@ -1,21 +1,29 @@
 package management_product.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private double price;
-    private String describe;
-    private String producer;
+    private String productDescribe;
+    private String productProducer;
 
     public Product() {
     }
 
-    public Product(int id, String name, double price, String describe, String producer) {
+    public Product(int id, String name, double price, String productDescribe, String productProducer) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.describe = describe;
-        this.producer = producer;
+        this.productDescribe = productDescribe;
+        this.productProducer = productProducer;
     }
 
     public int getId() {
@@ -42,19 +50,19 @@ public class Product {
         this.price = price;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getProductDescribe() {
+        return productDescribe;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setProductDescribe(String describe) {
+        this.productDescribe = describe;
     }
 
-    public String getProducer() {
-        return producer;
+    public String getProductProducer() {
+        return productProducer;
     }
 
-    public void setProducer(String producer) {
-        this.producer = producer;
+    public void setProductProducer(String producer) {
+        this.productProducer = producer;
     }
 }

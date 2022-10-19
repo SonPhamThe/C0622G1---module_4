@@ -1,7 +1,7 @@
 package management_product.controller;
 
 import management_product.model.Product;
-import management_product.service.IServiceProduct;
+import management_product.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,50 +14,49 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
     @Autowired
-    public IServiceProduct serviceProduct;
+    public IProductService serviceProduct;
 
     @GetMapping("")
     public String productList(Model model) {
         List<Product> productList = serviceProduct.displayAll();
         model.addAttribute("products", productList);
-        return "/home";
+        return "home";
     }
 
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("product", new Product());
-        return "/create";
+        return "create";
     }
 
     @PostMapping("/save")
     public String save(Product product, RedirectAttributes redirectAttributes) {
-        product.setId(createId());
         serviceProduct.create(product);
-        redirectAttributes.addFlashAttribute("message", "Create Products: " + product.getName() + "success");
+        redirectAttributes.addFlashAttribute("message", "Create Products: " + product.getName() + " success");
         return "redirect:/product";
     }
 
     //    id tự động tăng
-    public int createId() {
-        List<Product> productList = serviceProduct.displayAll();
-        int maxId = 0;
-        for (Product product : productList) {
-            if (product.getId() > maxId) {
-                maxId = product.getId();
-            }
-        }
-        return maxId + 1;
-    }
+//    public int createId() {
+//        List<Product> productList = serviceProduct.displayAll();
+//        int maxId = 0;
+//        for (Product product : productList) {
+//            if (product.getId() > maxId) {
+//                maxId = product.getId();
+//            }
+//        }
+//        return maxId + 1;
+//    }
 
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable int id, Model model) {
         model.addAttribute("product", serviceProduct.findById(id));
-        return "/delete";
+        return "delete";
     }
 
     @PostMapping("/delete")
     public String delete(Product product, RedirectAttributes redirect) {
-        serviceProduct.remove(product.getId());
+        serviceProduct.remove(product);
         redirect.addFlashAttribute("message", "Removed product successfully!");
         return "redirect:/product";
     }
@@ -65,23 +64,23 @@ public class ProductController {
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable int id, Model model) {
         model.addAttribute("product", serviceProduct.findById(id));
-        return "/edit";
+        return "edit";
     }
 
     @PostMapping("/update")
     public String update(Product product) {
-        serviceProduct.update(product.getId(), product);
+        serviceProduct.update(product);
         return "redirect:/product";
     }
 
     @GetMapping("/{id}/view")
     public String view(@PathVariable int id, Model model) {
         model.addAttribute("product", serviceProduct.findById(id));
-        return "/view";
+        return "view";
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam String searchName, Model model) {
+    public String search(@RequestParam(value = "searchName", defaultValue = "") String searchName, Model model) {
         model.addAttribute("products", serviceProduct.searchProduct(searchName));
         return "home";
     }

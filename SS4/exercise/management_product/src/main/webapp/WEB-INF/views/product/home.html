@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Products</h2>
+
+<p>
+    <a th:href="@{/product/create}">
+        Add new Product
+    </a>
+</p>
+
+<div>
+    <form class="d-flex" th:action="@{/product/search}">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchName">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+</div>
+
+<p th:text="${message}" style="color: #4CAF50"></p>
+
+<table id="products">
+    <thead>
+    <tr>
+        <th>STT</th>
+        <th>Name</th>
+        <th>PRICE</th>
+        <th>DESCRIBE</th>
+        <th>PRODUCER</th>
+        <th>Action</th>
+        <th>Action</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row,rowStat : ${products}">
+        <td th:text="${rowStat.count}"></td>
+        <td th:text="${row.getName()}"></td>
+        <td th:text="${row.getPrice()}"></td>
+        <td th:text="${row.getProductDescribe()}"></td>
+        <td th:text="${row.getProductProducer()}"></td>
+        <td>
+            <!--            <a th:href="@{/student/{id}-detail(id=${student.id})}">Detail</a>  truyền value-->
+            <!--            <a th:href="@{/student/__${student.id}__-detail}">Detail2</a>  truyền value-->
+            <!--            <a th:href="@{/student/detail/(id=${student,id})}">Detail3</a>  truyền key-value-->
+            <a th:href="@{/product/{id}/edit(id=${row.getId()})}">Edit</a>
+        </td>
+        <td>
+            <a th:href="@{/product/{id}/delete(id=${row.getId()})}">Delete</a>
+        </td>
+        <td>
+            <a th:href="@{/product/{id}/view(id=${row.getId()})}">View</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
