@@ -3,12 +3,12 @@ package com.example.app_blog.controller;
 import com.example.app_blog.model.Blog;
 import com.example.app_blog.service.IBlogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -20,9 +20,9 @@ public class BlogController {
     @Autowired
     private IBlogService blogService;
 
-    @GetMapping
-    public String show(Model model) {
-        List<Blog> blogList = blogService.findAll();
+    @GetMapping("/list")
+    public String show(@PageableDefault(value = 3) Pageable pageable, Model model) {
+        Page<Blog> blogList = blogService.findAll(pageable);
         model.addAttribute("blogs", blogList);
         return "home";
     }
@@ -69,5 +69,13 @@ public class BlogController {
         blogService.remove(blog);
         redirect.addFlashAttribute("message", "Removed product successfully!");
         return "redirect:/blog";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam(value = "searchNameOne", defaultValue = "") String searchNameOne,
+                         @RequestParam(value = "searchNameTwo", defaultValue = "") String searchNameTwo
+            , Model model) {
+        model.addAttribute("blogs", blogService.searchByNameBlog(searchNameOne, searchNameTwo));
+        return "home";
     }
 }
