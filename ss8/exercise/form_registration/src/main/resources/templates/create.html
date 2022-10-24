@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head"></head>
+<body>
+<h3>Add Customer</h3>
+<p>
+    <a th:href="@{/user}">
+        Back to Page User
+    </a>
+</p>
+
+<p style="color:#4CAF50;" th:text="${message}"></p>
+
+<div id="form">
+    <form th:action="@{/user/create}" th:object="${userDTO}"
+          method="post" novalidate="novalidate">
+        <input type="hidden" th:field="*{id}"/>
+        <div>
+            <label>First Name</label>
+            <input type="text" th:field="*{getFirstName()}"/>
+        </div>
+        <div>
+            <label>Last Name</label>
+            <input type="text" th:field="*{getLastName()}"/>
+        </div>
+        <div>
+            <label>Phone Number</label>
+            <textarea style="width: 100%; height: 200%" th:value="*{getPhoneNumber()}"></textarea>
+            <!--            <input type="text" th:text  th:field="*{content}"/>-->
+        </div>
+        <div>
+            <label>Age Day</label>
+            <input type="text" th:field="*{getAge()}"/>
+        </div>
+        <div>
+            <label>Email</label>
+            <input type="text" th:field="*{getEmail()}"/>
+        </div>
+        <input type="submit" value="Save"/>
+    </form>
+</div>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
