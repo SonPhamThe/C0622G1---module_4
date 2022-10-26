@@ -23,4 +23,9 @@ public class SongService implements ISongService {
     public void save(Song song) {
         iSongRepository.save(song);
     }
+
+    @Override
+    public Song findById(int id) {
+        return iSongRepository.findById(id).orElse(null);
+    }
 }

@@ -2,23 +2,35 @@ package com.example.app_blog.model;
 
 import org.omg.PortableInterceptor.INACTIVE;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String nameBlog;
     private String nameWriter;
     private String content;
     private String compositionDay;
     private int view;
 
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category category;
+
     public Blog() {
+    }
+
+    public Blog(Integer id, String nameBlog, String nameWriter, String content, String compositionDay, int view, Category category) {
+        this.id = id;
+        this.nameBlog = nameBlog;
+        this.nameWriter = nameWriter;
+        this.content = content;
+        this.compositionDay = compositionDay;
+        this.view = view;
+        this.category = category;
     }
 
     public Integer getId() {
@@ -67,5 +79,13 @@ public class Blog {
 
     public void setView(int view) {
         this.view = view;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

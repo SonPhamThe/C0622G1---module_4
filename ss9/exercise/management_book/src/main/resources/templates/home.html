@@ -7,16 +7,16 @@
     </head>
     m
 <body>
-<h2>Page Blog</h2>
+<h2>Page Book</h2>
 
 <p>
-    <a th:href="@{/blog/create}">
-        Add new Product
+    <a th:href="@{/book/create}">
+        Add comic book borrowing history
     </a>
 </p>
 
 <div>
-    <form class="d-flex" th:action="@{/blog/search}">
+    <form class="d-flex" th:action="@{/book/search}">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchNameOne">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchNameTwo">
         <button class="btn btn-outline-success" type="submit">Search</button>
@@ -29,43 +29,37 @@
     <thead>
     <tr>
         <th>STT</th>
-        <th>Name Blog</th>
-        <th>Name Writer</th>
-        <th style="display: none">Content</th>
-        <th>Composition Day</th>
-        <th>View</th>
+        <th>Name Book</th>
+        <th>Count</th>
         <th>Action</th>
         <th>Action</th>
         <th>Action</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="row,rowStat : ${blogs}">
+    <tr th:each="row,rowStat : ${bookList}">
         <td th:text="${rowStat.count}"></td>
-        <td th:text="${row.getNameBlog()}"></td>
-        <td th:text="${row.getNameWriter()}"></td>
-        <td style="display: none;" th:text="${row.getContent()}"></td>
-        <td th:text="${row.getCompositionDay()}"></td>
-        <td th:text="${row.getView()}"></td>
+        <td th:text="${row.getName()}"></td>
+        <td th:text="${row.getCount()}"></td>
         <td>
             <!--            <a th:href="@{/student/{id}-detail(id=${student.id})}">Detail</a>  truyền value-->
             <!--            <a th:href="@{/student/__${student.id}__-detail}">Detail2</a>  truyền value-->
             <!--            <a th:href="@{/student/detail/(id=${student,id})}">Detail3</a>  truyền key-value-->
-            <a th:href="@{/blog/{id}/edit(id=${row.getId()})}">Edit</a>
+            <a th:href="@{/book/{id}/order(id=${row.getId()})}">Borrow</a>
         </td>
         <td>
-            <a th:href="@{/blog/{id}/delete(id=${row.getId()})}">Delete</a>
+            <a th:href="@{/song/{id}/delete(id=${row.getId()})}">Pay</a>
         </td>
         <td>
-            <a th:href="@{/blog/{id}/view(id=${row.getId()})}">View</a>
+            <a th:href="@{/song/{id}/view(id=${row.getId()})}">View</a>
         </td>
     </tr>
     </tbody>
 </table>
 <div>
-    <a th:if="${blogs.hasPrevious()}" th:href="@{''(page=${blogs.number - 1})}">Previous</a>
-    <span th:text = "${blogs.number + 1}"></span>/<span th:text = "${blogs.totalPages}"></span>
-    <a th:if="${blogs.hasNext()}" th:href="@{''(page=${blogs.number + 1})}">Next</a>
+<!--    <a th:if="${bookList.hasPrevious()}" th:href="@{'/book'(page=${bookList.number - 1})}">Previous</a>-->
+<!--    <span th:text="${bookList.number + 1}"></span>/<span th:text="${bookList.totalPages}"></span>-->
+<!--    <a th:if="${bookList.hasNext()}" th:href="@{'/book'(page=${bookList.number + 1})}">Next</a>-->
 </div>
 <footer th:replace="/layout :: footer"></footer>
 </body>

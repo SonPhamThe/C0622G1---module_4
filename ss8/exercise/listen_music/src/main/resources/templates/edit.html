@@ -2,17 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/layout :: head"></head>
 <body>
-<h3>Add Customer</h3>
+<h3>Edit Customer</h3>
 <p>
     <a th:href="@{/song}">
-        Back to Page User
+        Back to Page Blog
     </a>
 </p>
-
-<p style="color:#4CAF50;" th:text="${message}"></p>
-
 <div id="form">
-    <form th:action="@{/song/save}" th:object="${songDTO}"
+    <form th:action="@{/song/edit}" th:object="${song}"
           method="post" novalidate="novalidate">
         <input type="hidden" th:field="*{id}"/>
         <div>
@@ -31,7 +28,7 @@
             <p style="color: red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></p>
             <!--            <input type="text" th:text  th:field="*{content}"/>-->
         </div>
-        <input type="submit" value="Save"/>
+        <input type="submit" value="Edit"/>
     </form>
 </div>
 <footer th:replace="/layout :: footer"></footer>

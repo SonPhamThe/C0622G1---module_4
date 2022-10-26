@@ -1,21 +1,27 @@
+
 package listen_music.dto;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import javax.validation.constraints.NotEmpty;
+
 public class SongDTO implements Validator {
     private int id;
 
+    @NotEmpty(message = "Không được để trống vùng này")
     private String name;
 
+    @NotEmpty(message = "Không được để trống vùng này")
     private String performanceArtist;
 
+    @NotEmpty(message = "Không được để trống vùng này")
     private String category;
 
     public SongDTO() {
     }
 
-    public SongDTO(int id, String name, String performanceArtist, String category) {
+    public SongDTO( String name, String performanceArtist, String category) {
         this.id = id;
         this.name = name;
         this.performanceArtist = performanceArtist;
@@ -61,6 +67,15 @@ public class SongDTO implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-
+        SongDTO songDTO = (SongDTO) target;
+        if (!songDTO.getName().matches("[\\w+\\s*]{1,800}") && !songDTO.getName().equals("")) {
+            errors.rejectValue("name", "name.validation", "Không đúng định dạng");
+        }
+        if (!songDTO.getPerformanceArtist().matches("[\\w+\\s*]{1,300}") && !songDTO.getPerformanceArtist().equals("")) {
+            errors.rejectValue("performanceArtist", "performanceArtist.validation", "Không đúng định dạng");
+        }
+        if (!songDTO.getCategory().matches("[\\w+\\s*\\,*]{1,1000}") && !songDTO.getCategory().equals("")) {
+            errors.rejectValue("category", "category.validation", "Không đúng định dạng");
+        }
     }
 }

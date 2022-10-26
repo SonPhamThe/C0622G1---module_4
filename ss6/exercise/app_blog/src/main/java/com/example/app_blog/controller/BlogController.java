@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -20,7 +21,7 @@ public class BlogController {
     @Autowired
     private IBlogService blogService;
 
-    @GetMapping("/list")
+    @GetMapping("")
     public String show(@PageableDefault(value = 3) Pageable pageable, Model model) {
         Page<Blog> blogList = blogService.findAll(pageable);
         model.addAttribute("blogs", blogList);
@@ -35,6 +36,7 @@ public class BlogController {
 
     @PostMapping("/save")
     public String save(Blog blog, RedirectAttributes redirectAttributes) {
+//        blog.setCompositionDay(new Date(System.currentTimeMillis()));
         blogService.create(blog);
         redirectAttributes.addFlashAttribute("message", "Create Products: " + blog.getNameBlog() + " success");
         return "redirect:/blog";
