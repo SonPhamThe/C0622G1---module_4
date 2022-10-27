@@ -9,7 +9,5 @@ public interface IBookService {
 
     Book findById(int id);
 
-    Book order(Book book);
-
     void save(Book book);
 }

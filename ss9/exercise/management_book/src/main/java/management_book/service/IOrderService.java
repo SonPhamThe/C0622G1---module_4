@@ -13,4 +13,6 @@ public interface IOrderService {
     void update(Orders orders);
 
     void save(Orders orders);
+
+    void remove(Orders orders);
 }

@@ -47,14 +47,43 @@ public class BookController {
 
         model.addAttribute("bookOrder", bookService.findById(id));
         return "borrow";
+
     }
 
     @PostMapping("/order")
-    public String submitOrder(@RequestParam int id, @PageableDefault(value = 3) Pageable pageable, Book book, Model model) {
+    public String submitOrder(@RequestParam int id, @PageableDefault(value = 3) Pageable pageable, Book book, Model model) throws Exception {
         Book books = bookService.findById(id);
         books.setCount(books.getCount() - 1);
+        if(books.getCount() == -1) {
+            throw new Exception();
+        }
         bookService.save(books);
         model.addAttribute("bookList", bookService.displayALl(pageable));
         return "home";
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String handleError() {
+        return "error";
+    }
+
+    @GetMapping("/{id}/pay")
+    public String formPayBook(@PathVariable int id, Model model) {
+        Orders orders = new Orders();
+
+        long code = (long) (Math.random() * (99999 - 10000) + 10000);
+        orders.setCode(code);
+
+        long millis = System.currentTimeMillis();
+        orders.setDate(new Date(millis));
+
+        orders.setBooks(bookService.findById(id));
+
+        orderService.save(orders);
+
+        model.addAttribute("order", orders);
+
+        model.addAttribute("bookOrder", bookService.findById(id));
+        return "borrow";
     }
 }

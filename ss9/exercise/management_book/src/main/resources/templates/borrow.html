@@ -11,7 +11,7 @@
 <div id="form">
     <form th:action="@{/book/order}" th:object="${order}"
           method="post" novalidate="novalidate">
-        <input type="hidden" name="id" th:value ="*{getBooks().getId()}"/>
+        <input type="hidden" name="id" th:value="*{getBooks().getId()}"/>
         <input type="hidden" th:value="${bookOrder.id}"/>
         <div>
             <label>Name Book</label>
@@ -25,7 +25,7 @@
             <label>Date Borrow</label>
             <input type="text" th:field="*{date}" disabled/>
         </div>
-        <input type="button" value="Cancel"/>
+        <input th:action="/book" type="button" value="Cancel"/>
         <input type="submit" value="I'm sure borrow"/>
     </form>
 </div>

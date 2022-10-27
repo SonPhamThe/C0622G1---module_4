@@ -33,4 +33,9 @@ public class OrderService implements IOrderService {
     public void save(Orders orders) {
         orderRepository.save(orders);
     }
+
+    @Override
+    public void remove(Orders orders) {
+
+    }
 }

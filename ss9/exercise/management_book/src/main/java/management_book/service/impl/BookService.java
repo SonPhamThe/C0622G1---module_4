@@ -25,11 +25,6 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public Book order(Book book) {
-        return bookRepository.save(book);
-    }
-
-    @Override
     public void save(Book book) {
         bookRepository.save(book);
     }
