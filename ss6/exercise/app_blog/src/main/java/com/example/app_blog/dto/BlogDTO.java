@@ -1,49 +1,25 @@
-package com.example.app_blog.model;
+package com.example.app_blog.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.omg.PortableInterceptor.INACTIVE;
+import com.example.app_blog.model.Category;
 
-import javax.persistence.*;
-
-@Entity
-public class Blog {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class BlogDTO {
+    private int id;
     private String nameBlog;
     private String nameWriter;
     private String content;
     private String compositionDay;
     private int view;
 
-
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JsonBackReference
-    @JsonIgnore
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    public Blog() {
+    public BlogDTO() {
     }
 
-    public Blog(Integer id, String nameBlog, String nameWriter, String content, String compositionDay, int view, Category category) {
-        this.id = id;
-        this.nameBlog = nameBlog;
-        this.nameWriter = nameWriter;
-        this.content = content;
-        this.compositionDay = compositionDay;
-        this.view = view;
-        this.category = category;
-    }
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -94,4 +70,15 @@ public class Blog {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public BlogDTO(int id, String nameBlog, String nameWriter, String content, String compositionDay, int view) {
+        this.id = id;
+        this.nameBlog = nameBlog;
+        this.nameWriter = nameWriter;
+        this.content = content;
+        this.compositionDay = compositionDay;
+        this.view = view;
+    }
+
+
 }

@@ -11,13 +11,21 @@ import java.util.Optional;
 public interface IBlogService {
     Page<Blog> findAll(Pageable pageable);
 
+    List<Blog> findAll();
+
     void create(Blog blog);
 
     void update(Blog blog);
 
     Blog findById(int id);
 
+    Optional<Blog> findByIdOptional(int id);
+
     void remove(Blog blog);
 
+    void remove(int id);
+
     List<Blog> searchByNameBlog(@Param("searchNameOne") String searchNameOne, @Param("searchNameTwo") String searchNameTwo);
+
+    List<Blog> searchByNameCategory(@Param("keyword") String keyword);
 }
