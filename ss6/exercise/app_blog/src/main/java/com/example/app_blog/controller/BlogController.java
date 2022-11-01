@@ -80,4 +80,9 @@ public class BlogController {
         model.addAttribute("blogs", blogService.searchByNameBlog(searchNameOne, searchNameTwo));
         return "home";
     }
+
+    @GetMapping("/webservice")
+    public String displayWebSerivce() {
+        return "/web_service/list";
+    }
 }

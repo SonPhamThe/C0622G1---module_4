@@ -7,6 +7,9 @@ import com.example.app_blog.service.ICategoryService;
 import org.apache.coyote.Response;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +26,12 @@ public class BlogWebService {
 
     /* Lấy tài nguyên - xem danh sách bài viết */
     @GetMapping("")
-    public ResponseEntity<List<Blog>> getBlogList() {
-        List<Blog> blogList = blogService.findAll();
+    public ResponseEntity<List<Blog>> getBlogList(@PageableDefault(value = 3) Pageable pageable) {
+        Page<Blog> blogList = blogService.findAll(pageable);
         if (blogList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(blogList, HttpStatus.OK);
+        return new ResponseEntity<>(blogList.getContent(), HttpStatus.OK);
     }
 
     /* Tạo Tài Nguyên - tạo một bài viết mới */
@@ -80,7 +83,7 @@ public class BlogWebService {
         return new ResponseEntity<>(blogOptional.get(), HttpStatus.OK);
     }
 
-    /* Xem danh sách các bài viết của một category */
+    /* Xem danh sách các bài viết của một category theo tên */
     @GetMapping("/search/{nameCategory}")
     public ResponseEntity<List<Blog>> searchByNameCategory(@PathVariable String nameCategory) {
         /* Nếu không biết Collections thì dùng Interator */
@@ -90,4 +93,6 @@ public class BlogWebService {
         }
         return new ResponseEntity<>(blogList, HttpStatus.OK);
     }
+
+
 }
