@@ -1,26 +1,26 @@
-package case_study.model.customer;
+package case_study.model.facility;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class CustomerType {
+public class RentType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
 
-    @OneToMany(mappedBy = "customerType")
-    private Set<Customer> customers;
+    @OneToMany(mappedBy = "rentType")
+    private Set<Facility> facilities;
 
-    public CustomerType() {
+    public RentType() {
     }
 
-    public CustomerType(int id, String name, Set<Customer> customers) {
+    public RentType(int id, String name, Set<Facility> facilities) {
         this.id = id;
         this.name = name;
-        this.customers = customers;
+        this.facilities = facilities;
     }
 
     public int getId() {
@@ -39,11 +39,11 @@ public class CustomerType {
         this.name = name;
     }
 
-    public Set<Customer> getCustomers() {
-        return customers;
+    public Set<Facility> getFacilities() {
+        return facilities;
     }
 
-    public void setCustomers(Set<Customer> customers) {
-        this.customers = customers;
+    public void setFacilities(Set<Facility> facilities) {
+        this.facilities = facilities;
     }
 }

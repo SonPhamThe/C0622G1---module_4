@@ -1,7 +1,11 @@
 package case_study.model.employee;
 
+import case_study.model.contract.Contract;
+import case_study.model.user.User;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Employee {
@@ -29,10 +33,21 @@ public class Employee {
     @JoinColumn(name = "position_id", referencedColumnName = "id")
     private Position position;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "username", referencedColumnName = "username")
+    private User user;
+
+    public int getId() {
+        return id;
+    }
+
+    @OneToMany(mappedBy = "employee")
+    private Set<Contract> contracts;
+
     public Employee() {
     }
 
-    public Employee(int id, String name, Date dateOfBirth, String idCard, double salary, String phoneNumber, String email, String address, Division division, EducationDegree educationDegree, Position position) {
+    public Employee(int id, String name, Date dateOfBirth, String idCard, double salary, String phoneNumber, String email, String address, Division division, EducationDegree educationDegree, Position position, User user, Set<Contract> contracts) {
         this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -44,10 +59,8 @@ public class Employee {
         this.division = division;
         this.educationDegree = educationDegree;
         this.position = position;
-    }
-
-    public int getId() {
-        return id;
+        this.user = user;
+        this.contracts = contracts;
     }
 
     public void setId(int id) {
@@ -132,5 +145,21 @@ public class Employee {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Contract> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(Set<Contract> contracts) {
+        this.contracts = contracts;
     }
 }
