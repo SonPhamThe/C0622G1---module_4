@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head"></head>
+    <meta charset="UTF-8">
+    <title>Form Create Customer</title>
+</head>
+<body>
+<h1>Create Customer</h1>
+<a th:href="@{/customers}">Back List Customer</a>
+<p style="color:#4CAF50;" th:text="${message}"></p>
+<div id="form">
+    <form th:action="@{/customers/save}" th:object="${customerDTO}" method="post" novalidate="novalidate">
+        <table class="table">
+            <tr>
+                <td>Name</td>
+                <td>
+                    <input type="text" th:field="*{name}">
+                    <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Day of birth</td>
+                <td>
+                    <input type="date" th:field="*{dateOfBirth}">
+                </td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td>
+                    <select th:field="*{gender}">
+                        <option th:value="1">Male</option>
+                        <option th:value="2">FeMale</option>
+                        <option th:value="3">Bê đê</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>ID Card</td>
+                <td>
+                    <input type="text" th:field="*{idCard}">
+                    <p style="color: red" th:if="${#fields.hasErrors('idCard')}" th:errors="*{idCard}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Phone Number</td>
+                <td>
+                    <input type="text" th:field="*{phoneNumber}">
+                    <p style="color: red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>
+                    <input type="text" th:field="*{email}">
+                    <p style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>
+                    <input type="text" th:field="*{address}">
+                </td>
+            </tr>
+            <tr>
+                <td>Customer Type</td>
+                <td>
+                    <select th:field="*{customerType}">
+                        <option th:each="item: ${customerType}"
+                                th:value="${item.id}" th:text="${item.name}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="submit">Create</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>

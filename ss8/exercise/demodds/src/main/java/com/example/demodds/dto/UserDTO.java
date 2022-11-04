@@ -33,7 +33,7 @@ public class UserDTO implements Validator {
     public UserDTO() {
     }
 
-    public fgdHMN UserDTO(int id, String firstName, String lastName, String phoneNumber, int age, String email) {
+    public UserDTO(int id, String firstName, String lastName, String phoneNumber, int age, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -99,7 +99,7 @@ public class UserDTO implements Validator {
     public void validate(Object target, Errors errors) {
         UserDTO userDTO = (UserDTO) target;
 
-        if (!userDTO.getFirstName().matches("[a-zA-Z]+")) {
+        if (!userDTO.getFirstName().matches("\\p{Lu}\\p{Ll}+(\\s\\p{Lu}\\p{Ll}+)*")) {
             errors.rejectValue("firstName", "first-name", "Name must not have number");
         }
 

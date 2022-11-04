@@ -1,40 +1,46 @@
-package case_study.model.customer;
+package case_study.dto;
 
 import case_study.model.contract.Contract;
-import org.springframework.beans.factory.annotation.Value;
+import case_study.model.customer.CustomerType;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.Set;
 
-@Entity
-public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CustomerDTO implements Validator {
     private int id;
 
+    @NotEmpty
     private String name;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
+
     private int gender;
+
+    @NotEmpty
     private String idCard;
+
+    @NotEmpty
     private String phoneNumber;
+
+    @NotEmpty
     private String email;
+
+    @NotEmpty
     private String address;
 
-    @Column(columnDefinition = "int default 1")
-    private int status = 1;
-
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "customer_type_id", referencedColumnName = "id")
     private CustomerType customerType;
 
-    @OneToMany(mappedBy = "customer")
     private Set<Contract> contracts;
 
-    public Customer() {
+    public CustomerDTO() {
     }
 
-    public Customer(int id, String name, Date dateOfBirth, int gender, String idCard, String phoneNumber, String email, String address, CustomerType customerType, Set<Contract> contracts) {
+    public CustomerDTO(int id, String name, Date dateOfBirth, int gender, String idCard, String phoneNumber, String email, String address, CustomerType customerType, Set<Contract> contracts) {
         this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -125,5 +131,35 @@ public class Customer {
 
     public void setContracts(Set<Contract> contracts) {
         this.contracts = contracts;
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return false;
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        CustomerDTO customerDTO = (CustomerDTO) target;
+
+        if (!customerDTO.getName().matches("\\p{Lu}\\p{Ll}+(\\s\\p{Lu}\\p{Ll}+)*")) {
+            errors.rejectValue("name", "name", "Name must be not have number and first word must be capitalized");
+        }
+
+        if (!(customerDTO.getPhoneNumber().matches("[0][9][0]\\d{7}") ||
+                customerDTO.getPhoneNumber().matches("[0][9][1]\\d{7}") ||
+                customerDTO.getPhoneNumber().matches("[(][8][4][)][+][9][0]\\d{7}") ||
+                customerDTO.getPhoneNumber().matches("[(][8][4][)][+][9][1]\\d{7}"))) {
+            errors.rejectValue("phoneNumber", "phone-number", "Phone number must be valid (090xxxxxxx) hoặc (091xxxxxxx) hoặc (84)+90xxxxxxx hoặc (84)+91xxxxxxx");
+        }
+
+        if (!(customerDTO.getIdCard().matches("\\d{9}") ||
+                customerDTO.getIdCard().matches("\\d{12}"))) {
+            errors.rejectValue("idCard", "id-card", "ID card must be valid (XXXXXXXXX) hoặc (XXXXXXXXXXXX)");
+        }
+
+        if (!customerDTO.getEmail().matches("\\w+[@]\\w+[.]\\w+")) {
+            errors.rejectValue("email", "email", "Email must be valid");
+        }
     }
 }

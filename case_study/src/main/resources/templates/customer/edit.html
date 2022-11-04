@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head"></head>
+<body>
+<h3>Edit Customer</h3>
+<p>
+    <a th:href="@{/customers}">
+        Back to Page Customer
+    </a>
+</p>
+<div id="form">
+    <form th:action="@{/customers/edit}" th:object="${customer}"
+          method="post" novalidate="novalidate">
+        <input type="hidden" th:field="*{id}"/>
+        <div>
+            <label>Name</label>
+            <input type="text" th:field="*{name}"/>
+            <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+        </div>
+        <div>
+            <label>Day of Birth</label>
+            <input type="date" th:field="*{dateOfBirth}">
+        </div>
+        <div>
+            <label>Gender</label>
+            <input type="text" th:field="*{gender}"/>
+        </div>
+        <div>
+            <label>ID Card</label>
+            <input type="text" th:field="*{idCard}"/>
+            <p style="color: red" th:if="${#fields.hasErrors('idCard')}" th:errors="*{idCard}"></p>
+        </div>
+        <div>
+            <label>Phone Number</label>
+            <input type="text" th:field="*{phoneNumber}"/>
+            <p style="color: red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></p>
+        </div>
+        <div>
+            <label>Email</label>
+            <input type="text" th:field="*{email}"/>
+            <p style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+        </div>
+        <div>
+            <label>Address</label>
+            <input type="text" th:field="*{address}"/>
+        </div>
+        <div>
+            <label>Customer Type</label>
+            <select th:field="*{customerType}">
+                <option th:each="item: ${customerType}"
+                        th:value="${item.id}" th:text="${item.name}"></option>
+            </select>
+        </div>
+        <input type="submit" value="Edit"/>
+    </form>
+</div>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>

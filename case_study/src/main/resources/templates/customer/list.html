@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+    <meta charset="UTF-8">
+    <title>Page Customer</title>
+</head>
+<body>
+<h1>List Customer</h1>
+<p style="color:#4CAF50;" th:text="${message}"></p>
+<p>
+    <a th:href="@{/customers/create}">Create new Customer</a>
+</p>
+<div>
+    <form class="d-flex" th:action="@{/customers/search}">
+        <input class="form-control me-2" type="search" placeholder="Search name customer" aria-label="Search" name="searchName">
+        <input class="form-control me-2" type="search" placeholder="Search email" aria-label="Search" name="searchEmail">
+        <input class="form-control me-2" type="search" placeholder="Search customer type" aria-label="Search" name="searchCustomerType">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+</div>
+<table id="products">
+    <thead>
+    <tr>
+        <th>STT</th>
+        <th>Name Customer</th>
+        <th>Date Of Birth</th>
+        <th>Gender</th>
+        <th>ID Card</th>
+        <th>Phone Number</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Customer Type</th>
+        <th>Action</th>
+        <th>Action</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row,rowStat : ${customers}">
+        <td th:text="${rowStat.count}"></td>
+        <td th:text="${row.name}"></td>
+        <td th:text="${row.dateOfBirth}"></td>
+        <td th:text="${row.gender}"></td>
+        <td th:text="${row.idCard}"></td>
+        <td th:text="${row.phoneNumber}"></td>
+        <td th:text="${row.email}"></td>
+        <td th:text="${row.address}"></td>
+        <td th:text="${row.customerType.name}"></td>
+        <td>
+            <a th:href="@{/customers/{id}/edit(id=${row.getId()})}">Edit</a>
+        </td>
+        <td>
+            <a th:href="@{/blog/{id}/delete(id=${row.getId()})}">Delete</a>
+        </td>
+        <td>
+            <a th:href="@{/blog/{id}/view(id=${row.getId()})}">View</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <a th:if="${customers.hasPrevious()}" th:href="@{'/customers'(page=${customers.number - 1})}">Previous</a>
+    <span th:text="${customers.number + 1}"></span>/<span th:text="${customers.totalPages}"></span>
+    <a th:if="${customers.hasNext()}" th:href="@{'/customers'(page=${customers.number + 1})}">Next</a>
+</div>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
