@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+    <meta charset="UTF-8">
+    <title>Page Facility</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<h1>List Facility</h1>
+<p style="color:#4CAF50;" th:text="${message}"></p>
+<p>
+    <a th:href="@{/facility/create}">Create new Facility</a>
+</p>
+<div>
+    <form class="d-flex" th:action= "@{/facility}">
+        <input class="form-control me-2" type="search" placeholder="Search name customer" aria-label="Search"
+               name="searchName">
+        <input class="form-control me-2" type="search" placeholder="Search email" aria-label="Search"
+               name="searchEmail">
+        <input class="form-control me-2" type="search" placeholder="Search customer type" aria-label="Search"
+               name="searchCustomerType">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+</div>
+<table id="products">
+    <thead>
+    <tr>
+        <th>STT</th>
+        <th>Name</th>
+        <th>Area</th>
+        <th>Cost</th>
+        <th>Max People</th>
+        <th>Standard Room</th>
+        <th>Description Other Convenience</th>
+        <th>Pool Area</th>
+        <th>Number Of Floors</th>
+        <th>Facility Free</th>
+        <th>Rent Type</th>
+        <th>Facility Type</th>
+        <th>Action</th>
+        <th>Action</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row,rowStat : ${facilities}">
+        <td th:text="${rowStat.count}"></td>
+        <td th:text="${row.name}"></td>
+        <td th:text="${row.area}"></td>
+        <td th:text="${row.cost}"></td>
+        <td th:text="${row.maxPeople}"></td>
+        <td th:text="${row.standardRoom}"></td>
+        <td th:text="${row.descriptionOtherConvenience}"></td>
+        <td th:text="${row.poolArea}"></td>
+        <td th:text="${row.numberOfFloors}"></td>
+        <td th:text="${row.facilityFree}"></td>
+        <td th:text="${row.rentType.name}"></td>
+        <td th:text="${row.facilityType.name}"></td>
+        <td>
+            <a th:href="@{/customers/{id}/edit(id=${row.getId()})}">Edit</a>
+        </td>
+        <td>
+            <button th:attr="onclick=|deleteCustomer('${row.id}', '${row.name}')|"  type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                remove
+            </button>
+        </td>
+        <td>
+            <a th:href="@{/blog/{id}/view(id=${row.getId()})}">View</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <a th:if="${facilities.hasPrevious()}" th:href="@{'/facility'(page=${facilities.number - 1})}">Previous</a>
+    <span th:text="${facilities.number + 1}"></span>/<span th:text="${facilities.totalPages}"></span>
+    <a th:if="${facilities.hasNext()}" th:href="@{'/facility'(page=${facilities.number + 1})}">Next</a>
+</div>
+
+<!--&lt;!&ndash; Modal delete&ndash;&gt;-->
+<!--<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <form action="/customers/delete">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Customer</h1>-->
+<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    <p>-->
+<!--                        <span>Delete, Are you sure!</span>-->
+<!--                        <span id="name-delete" class="text-danger"></span>-->
+<!--                    </p>-->
+<!--                    <input type="text" id="id-delete" name="id" hidden>-->
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--                    <button type="submit" class="btn btn-danger">delete</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
+<!--&lt;!&ndash;END  Modal delete&ndash;&gt;-->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!--<script>-->
+<!--    function deleteCustomer(idDelete, nameDelete) {-->
+<!--        document.getElementById('id-delete').value = idDelete;-->
+<!--        document.getElementById('name-delete').innerText = nameDelete;-->
+<!--    }-->
+<!--</script>-->
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>

@@ -18,6 +18,9 @@ public class Contract {
     private Date endDate;
     private double deposit;
 
+    @Column(columnDefinition = "int default 1")
+    private int status = 1;
+
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;

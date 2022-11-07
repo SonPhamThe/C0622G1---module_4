@@ -17,7 +17,7 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public Page<Customer> displayListCustomer(Pageable pageable) {
-        return customerRepository.findAll(pageable);
+        return customerRepository.findAllCustomer(pageable);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public void remove(Customer customer) {
-        customerRepository.delete(customer);
+    public void remove(int id) {
+        customerRepository.removeById(id);
     }
 }

@@ -11,6 +11,9 @@ public class Role {
 
     private String roleName;
 
+    @Column(columnDefinition = "int default 1")
+    private int status = 1;
+
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 

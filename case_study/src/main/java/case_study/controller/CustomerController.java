@@ -2,6 +2,7 @@ package case_study.controller;
 
 import case_study.dto.CustomerDTO;
 import case_study.model.customer.Customer;
+import case_study.model.customer.CustomerType;
 import case_study.service.ICustomerService;
 import case_study.service.ICustomerTypeService;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.jws.WebParam;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -30,16 +32,29 @@ public class CustomerController {
     @Autowired
     private ICustomerService customerService;
 
+    @ModelAttribute("customerType")
+    public List<CustomerType> listCustomerType() {
+        return customerTypeService.listCustomerType();
+    }
+
     @GetMapping("")
-    public String showListCustomer(@PageableDefault(value = 4) Pageable pageable, Model model) {
-        Page<Customer> customers = customerService.displayListCustomer(pageable);
-        model.addAttribute("customers", customers);
+    public String searchCustomer(@RequestParam(value = "searchName", defaultValue = "") String searchName,
+                                 @RequestParam(value = "searchEmail", defaultValue = "") String searchEmail,
+                                 @RequestParam(value = "searchCustomerType", defaultValue = "") String searchCustomerType,
+                                 @PageableDefault(value = 4) Pageable pageable,
+                                 Model model,
+                                 RedirectAttributes redirectAttributes) {
+        Page<Customer> customers = customerService.findByNameAndEmailAndCustomerType(searchName, searchEmail, searchCustomerType, pageable);
+        model.addAttribute("searchName", searchName);
+        model.addAttribute("searchEmail", searchEmail);
+        model.addAttribute("searchCustomerType", searchCustomerType);
+        model.addAttribute("customerSearch", customers);
+        model.addAttribute("customers", customerService.displayListCustomer(pageable));
         return "/customer/list";
     }
 
     @GetMapping("/create")
     public String showCreateCustomer(Model model) {
-        model.addAttribute("customerType", customerTypeService.listCustomerType());
         model.addAttribute("customerDTO", new CustomerDTO());
         return "/customer/create";
     }
@@ -51,20 +66,18 @@ public class CustomerController {
                                  Model model) {
         new CustomerDTO().validate(customerDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("customerType", customerTypeService.listCustomerType());
             return "/customer/create";
         } else {
             Customer customer = new Customer();
             BeanUtils.copyProperties(customerDTO, customer);
             customerService.create(customer);
             redirectAttributes.addFlashAttribute("message", "Create New Customer " + customer.getName() + " success");
-            return "redirect:/customers";
+            return "redirect:/customers/create";
         }
     }
 
     @GetMapping("/{id}/edit")
     public String showFormEdit(@PathVariable int id, Model model) {
-        model.addAttribute("customerType", customerTypeService.listCustomerType());
         model.addAttribute("customer", customerService.findById(id));
         return "/customer/edit";
     }
@@ -76,7 +89,6 @@ public class CustomerController {
                                Model model) {
         new CustomerDTO().validate(customerDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("customerType", customerTypeService.listCustomerType());
             return "/customer/edit";
         } else {
             Customer customer = new Customer();
@@ -87,15 +99,9 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/search")
-    public String searchCustomer(@RequestParam(value = "searchName", defaultValue = "") String searchName,
-                                 @RequestParam(value = "searchEmail", defaultValue = "") String searchEmail,
-                                 @RequestParam(value = "searchCustomerType", defaultValue = "") String searchCustomerType,
-                                 @PageableDefault(value = 4) Pageable pageable,
-                                 Model model) {
-        Page<Customer> customers = customerService.findByNameAndEmailAndCustomerType(searchName, searchEmail, searchCustomerType, pageable);
-        model.addAttribute("customerType", customerTypeService.listCustomerType());
-        model.addAttribute("customers", customers);
-        return "/customer/list";
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable int id, Model model) {
+        customerService.remove(id);
+        return "redirect:/customers";
     }
 }

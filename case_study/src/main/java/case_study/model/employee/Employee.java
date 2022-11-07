@@ -21,6 +21,9 @@ public class Employee {
     private String email;
     private String address;
 
+    @Column(columnDefinition = "int default 1")
+    private int status = 1;
+
     @ManyToOne
     @JoinColumn(name = "division_id", referencedColumnName = "id")
     private Division division;

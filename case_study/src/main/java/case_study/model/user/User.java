@@ -12,6 +12,9 @@ public class User {
 
     private String password;
 
+    @Column(columnDefinition = "int default 1")
+    private int status = 1;
+
     @OneToOne(mappedBy = "user")
     private Employee employee;
 

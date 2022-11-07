@@ -1,14 +1,14 @@
-package case_study.model.facility;
+package case_study.dto;
 
 import case_study.model.contract.Contract;
+import case_study.model.facility.FacilityType;
+import case_study.model.facility.RentType;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Set;
 
-@Entity
-public class Facility {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class FacilityDTO {
     private int id;
 
     private String name;
@@ -21,24 +21,16 @@ public class Facility {
     private int numberOfFloors;
     private String facilityFree;
 
-    @Column(columnDefinition = "int default 1")
-    private int status = 1;
+    private RentType rentType;
 
-    @ManyToOne
-    @JoinColumn(name = "rent_type", referencedColumnName = "id")
-        private RentType rentType;
-
-    @OneToMany(mappedBy = "facility")
     private Set<Contract> contracts;
 
-    @ManyToOne
-    @JoinColumn(name = "facility_type", referencedColumnName = "id")
     private FacilityType facilityType;
 
-    public Facility() {
+    public FacilityDTO() {
     }
 
-    public Facility(int id, String name, int area, double cost, int maxPeople, String standardRoom, String descriptionOtherConvenience, double poolArea, int numberOfFloors, String facilityFree, RentType rentType, Set<Contract> contracts, FacilityType facilityType) {
+    public FacilityDTO(int id, String name, int area, double cost, int maxPeople, String standardRoom, String descriptionOtherConvenience, double poolArea, int numberOfFloors, String facilityFree, RentType rentType, Set<Contract> contracts, FacilityType facilityType) {
         this.id = id;
         this.name = name;
         this.area = area;
