@@ -76,6 +76,7 @@
     </tr>
     </tbody>
 </table>
+
 <div>
     <a th:href="@{'/customers'(page=${customers.number - 1}, searchName=${searchName}, searchEmail=${searchEmail}, searchCustomerType=${searchCustomerType})}"
        th:if="${customers.hasPrevious()}" title="previous page">Previous</a>
@@ -95,7 +96,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Bạn có muốn xóa <strong class="text-danger" id="nameDelete"></strong>
+                Bạn có muốn xóa  <strong class="text-danger" id="nameDelete"></strong>
             </div>
             <div class="modal-footer">
                 <input type="text" name="id" id="id" hidden>
@@ -106,6 +107,7 @@
     </div>
 </div>
 <!--END  Modal delete -->
+
 <script>
     function infoDelete(id, name) {
         document.getElementById("nameDelete").value = name;

@@ -36,71 +36,83 @@
     <thead>
     <tr>
         <th>STT</th>
-        <th>Name</th>
-        <th>Area</th>
-        <th>Cost</th>
-        <th>Max People</th>
-        <th>Standard Room</th>
-        <th>Description Other Convenience</th>
-        <th>Pool Area</th>
-        <th>Number Of Floors</th>
-        <th>Facility Free</th>
-        <th>Rent Type</th>
-        <th>Facility Type</th>
-        <th>Action</th>
-        <th>Action</th>
-        <th>Action</th>
+        <th>Facility Name</th>
+        <th>Customer Name</th>
+        <th>Start Day</th>
+        <th>End Day</th>
+        <th>Deposit</th>
+        <th>Total Money</th>
+        <th colspan="2">Accompanied service</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="row,rowStat : ${facilitySearch}">
-        <td th:text="${rowStat.count}"></td>
-        <td th:text="${row.name}"></td>
-        <td th:text="${row.area}"></td>
-        <td th:text="${row.cost}"></td>
-        <td th:text="${row.maxPeople}"></td>
-        <td th:text="${row.standardRoom}"></td>
-        <td th:text="${row.descriptionOtherConvenience}"></td>
-        <td th:text="${row.poolArea}"></td>
-        <td th:text="${row.numberOfFloors}"></td>
-        <td th:text="${row.facilityFree}"></td>
-        <td th:text="${row.rentType.name}"></td>
-        <td th:text="${row.facilityType.name}"></td>
-        <td>
-            <button type="button" class="btn btn-danger"
-                    th:href="@{/facility/edit/__${row.getId()}__}">
-                Edit
-            </button>
-        </td>
-        <td>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                    data-bs-target="#delete"
-                    th:attr="onclick=|infoDelete('${row.id}', '${row.name}')|">
-                Delete
-            </button>
-        </td>
-        <td class="text-center">
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                    data-bs-target="#viewFacility"
-                    th:attr="onclick=|details('${row.name}', '${row.area}',
-                '${row.cost}', '${row.maxPeople}', '${row.standardRoom}',
-                '${row.descriptionOtherConvenience}', '${row.poolArea}', '${row.numberOfFloors}', '${row.facilityFree}',
-                '${row.rentType.name}', '${row.facilityType.name}')|">
-                View
-            </button>
-        </td>
-    </tr>
+    <th:block th:each="contract,iState : ${contractList}">
+        <tr>
+            <td th:text="${iState.count}"></td>
+            <td th:text="${contract.facility.name}"></td>
+            <td th:text="${contract.customer.name}"></td>
+            <td th:text="${contract.startDate}"></td>
+            <td th:text="${contract.endDate}"></td>
+            <td th:text="${contract.deposit}"></td>
+            <td th:text="${contract.total}"></td>
+            <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add"
+                        th:attr="onclick=|infoAdd('${contract.id}')|">
+                    +
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#view"
+                        th:attr="onclick=|infoContractId('${contract.id}')|">
+                    Accompanied service list
+                </button>
+            </td>
+        </tr>
+    </th:block>
     </tbody>
 </table>
 
 <!--Phân trang-->
 <div>
-    <a th:href="@{'/facility'(page=${facilitySearch.number - 1}, searchName=${searchName}, searchFacilityType=${searchFacilityType})}"
-       th:if="${facilitySearch.hasPrevious()}" title="previous page">Previous</a>
+    <a th:href="@{'/contract'(page=${contractList.number - 1})}"
+       th:if="${contractList.hasPrevious()}" title="previous page">
+        Previous
+    </a>
     <a href="#" class="active"><span
-            th:text="${facilitySearch.number+1}+'/'+${facilitySearch.totalPages}"></span></a>
-    <a th:href="@{'/facility'(page=${facilitySearch.number + 1}, searchName=${searchName}, searchFacilityType=${searchFacilityType})}"
-       th:if="${facilitySearch.hasNext()}" title="next page">Next</a>
+            th:text="${contractList.number+1}+'/'+${contractList.totalPages}"></span></a>
+    <a th:href="@{'/contract'(page=${contractList.number + 1})}"
+       th:if="${contractList.hasNext()}" title="next page">
+        Next
+    </a>
+</div>
+
+<div class="modal fade " id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+     style="color: white">
+    <div class="modal-dialog ">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Accompanied service</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/contract/create-attach" method="post">
+                    <select name="attachId" id="attachFacility" class="form-select"
+                            aria-label="Default select example">
+                        <option th:each="item : ${attachFacilityList}"
+                                th:value="${item.id}"
+                                th:text="${item.name}+ ' | ' + ${item.cost}">
+                        </option>
+                    </select>
+                    Quantity: <input type="number" name="quantity">
+                    <input hidden type="text" id="id1" name="contractId">
+                    <div style="text-align: center; margin-top: 5px">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input class="btn btn-primary" type="submit" value="Save">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal delete-->
@@ -223,3 +235,66 @@
 <footer th:replace="/layout :: footer"></footer>
 </body>
 </html>
+
+<!--<div class="body-mid">-->
+<!--    <div class="body-mid-right">-->
+<!--        <table class="table table-white" style="text-align: center" border="1">-->
+<!--        </table>-->
+<!--        <div class="modal fade " id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"-->
+<!--             style="color: white">-->
+<!--            <div class="modal-dialog ">-->
+<!--                <div class="modal-content bg-dark">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h5 class="modal-title" id="exampleModalLabel">Accompanied service</h5>-->
+<!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body">-->
+<!--                        <form action="/contract/create-attach" method="post">-->
+<!--                            <select name="attachId" id="attachFacility" class="form-select"-->
+<!--                                    aria-label="Default select example">-->
+<!--                                <option th:each="item : ${attachFacilityList}"-->
+<!--                                        th:value="${item.id}"-->
+<!--                                        th:text="${item.name}+ ' | ' + ${item.cost}">-->
+<!--                                </option>-->
+<!--                            </select>-->
+<!--                            Quantity: <input type="number" name="quantity">-->
+<!--                            <input hidden type="text" id="id" name="contractId">-->
+<!--                            <div style="text-align: center; margin-top: 5px">-->
+<!--                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--                                <input class="btn btn-primary" type="submit" value="Save">-->
+<!--                            </div>-->
+<!--                        </form>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="modal fade " id="view" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"-->
+<!--             style="color: white">-->
+<!--            <div class="modal-dialog ">-->
+<!--                <div class="modal-content bg-dark">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h5 class="modal-title" id="exampleModalLabel1">Accompanied service list</h5>-->
+<!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body">-->
+<!--                        <table class="table table-white" style="text-align: center;color: white" border="1">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <th>Name</th>-->
+<!--                                <th>Quantity</th>-->
+<!--                                <th>Unit</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody id="attachFacilityList">-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <th:block th:if="${message}">-->
+<!--            <p style="text-align: center" th:text="${message}"></p>-->
+<!--        </th:block>-->
+<!--    </div>-->
+<!--</div>-->

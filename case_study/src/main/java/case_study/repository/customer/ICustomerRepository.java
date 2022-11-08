@@ -31,5 +31,4 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
     @Modifying
     @Query(value = "UPDATE `customer` SET `status` = 0 WHERE (`id` = :id);\n", nativeQuery = true)
     void removeById(@Param("id") int id);
-
 }
