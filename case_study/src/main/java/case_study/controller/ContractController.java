@@ -15,7 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -106,6 +109,29 @@ public class ContractController {
         }
         redirectAttributes.addFlashAttribute("message", "Add Attach Facility successfully!");
         return "redirect:/contract";
+    }
+
+    @GetMapping("/create")
+    public ModelAndView showCreateForm(){
+        ModelAndView modelAndView = new ModelAndView("contract/create");
+        modelAndView.addObject("contractDTO",new ContractDTO());
+        return modelAndView;
+    }
+    @PostMapping("/create")
+    public ModelAndView create(@ModelAttribute @Validated ContractDTO contractDTO, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            ModelAndView modelAndView = new ModelAndView("contract/create");
+            modelAndView.addObject("contractDTO", contractDTO);
+            modelAndView.addObject("message", "Add new not success!");
+            return modelAndView;
+        }
+        Contract contract = new Contract();
+        BeanUtils.copyProperties(contractDTO, contract);
+        contractService.save(contract);
+        ModelAndView modelAndView = new ModelAndView("contract/create");
+        modelAndView.addObject("contractDTO", contractDTO);
+        modelAndView.addObject("message", "Add new Successful!");
+        return modelAndView;
     }
 }
 

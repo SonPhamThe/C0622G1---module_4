@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>create customer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"></head>
+<body>
+<a th:href="@{/contract}">Back to contract list</a>
+<div style="text-align: center">
+    <th:block th:if="${message}">
+        <p style="color: red;font-weight: bold" th:text="${message}"></p>
+    </th:block>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-3"></div>
+
+        <div style="background: lightblue" class="col-lg-6 shadow-lg">
+            <form th:action="@{/contract/create}"  method="post" th:object="${contractDTO}">
+                <div class="mb-5 mt-3 text-center fst-italic">
+                    <h1>Add New Contract Form</h1>
+                </div>
+
+                <div class="mb-3">
+                    <label for="facility" class="form-label fw-bold fst-italic">Facility Name:</label>
+                    <select th:field="*{facility}" id="facility" class="form-select" aria-label="Default select example">
+                        <option th:each="item : ${facilities}"
+                                th:value="${item.id}"
+                                th:text="${item.name}">
+                        </option>
+                    </select>
+                    <p style="color: red" th:errors="*{facility}" th:if="${#fields.hasErrors('facility')}"> </p>
+                </div>
+
+                <div class="mb-3">
+                    <label for="startDay" class="form-label fw-bold fst-italic">Start Day:</label>
+                    <input th:field="*{startDate}" type="date" class="form-control" id="startDay" aria-describedby="dateStart">
+                    <p style="color: red" th:errors="*{startDate}" th:if="${#fields.hasErrors('startDate')}"> </p>
+                </div>
+
+                <div class="mb-3">
+                    <label for="endDay" class="form-label fw-bold fst-italic">End Day:</label>
+                    <input th:field="*{endDate}" type="date" class="form-control" id="endDay" aria-describedby="dateEnd">
+                    <p style="color: red" th:errors="*{endDate}" th:if="${#fields.hasErrors('endDate')}"> </p>
+                </div>
+
+                <div class="mb-3">
+                    <label for="deposit" class="form-label fw-bold fst-italic">Deposit </label>
+                    <input th:field="*{deposit}" type="number" class="form-control" id="deposit" aria-describedby="deposit">
+                    <p style="color: red" th:errors="*{deposit}" th:if="${#fields.hasErrors('deposit')}"> </p>
+                </div>
+
+                <div class="mb-3">
+                    <label for="employeeId" class="form-label fw-bold fst-italic">Employee Name:</label>
+                    <select th:field="*{employee}" id="employeeId" class="form-select" aria-label="Default select example">
+                        <option th:each="item : ${employess}"
+                                th:value="${item.id}"
+                                th:text="${item.name}">
+                        </option>
+                    </select>
+                    <p style="color: red" th:errors="*{employee}" th:if="${#fields.hasErrors('employee')}"> </p>
+                </div>
+
+                <div class="mb-3">
+                    <label for="customerId" class="form-label fw-bold fst-italic">Customer Name:</label>
+                    <select th:field="*{customer}" id="customerId" class="form-select" aria-label="Default select example">
+                        <option th:each="item : ${customers}"
+                                th:value="${item.id}"
+                                th:text="${item.name}">
+                        </option>
+                    </select>
+                    <p style="color: red" th:errors="*{customer}" th:if="${#fields.hasErrors('customer')}"> </p>
+                </div>
+                <button type="submit" class="btn btn-primary mb-3 w-100">Add New Contract</button>
+            </form>
+        </div>
+
+        <div class="col-lg-3"></div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
